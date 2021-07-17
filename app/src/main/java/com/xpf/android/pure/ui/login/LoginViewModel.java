@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.xpf.android.pure.App;
 import com.xpf.android.pure.R;
+import com.xpf.android.pure.constant.Status;
 import com.xpf.android.pure.data.LoginRepository;
 import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.LoggedInUser;
@@ -35,16 +36,25 @@ public class LoginViewModel extends ViewModel {
         loginRepository.login(username, password, result -> {
             if (result instanceof Result.Success) {
                 LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-                String userName = data.getAccount().getUserName();
-                // setValue(T) 必须在主线程中调用 , 而 postValue(T) 既可以在主线程中调用, 也可以在子线程中调用
-                loginResult.postValue(new LoginResult(new LoggedInUserView(userName)));
+                Integer code = data.getCode();
+                if (Status.isSuccess(String.valueOf(code))) {
+                    String nickname = data.getProfile().getNickname();
+                    // setValue(T) 必须在主线程中调用 , 而 postValue(T) 既可以在主线程中调用, 也可以在子线程中调用
+                    loginResult.postValue(new LoginResult(new LoggedInUserView(nickname)));
+                } else {
+                    setValueOnResult(Status.getErrorMsg(String.valueOf(code)));
+                }
             } else {
                 Exception error = ((Result.Error<LoggedInUser>) result).getError();
-                String loginFailed = App.getContext().getString(R.string.login_failed);
-                String errorMsg = loginFailed + error.toString();
-                loginResult.postValue(new LoginResult(errorMsg));
+                setValueOnResult(error.toString());
             }
         });
+    }
+
+    private void setValueOnResult(String error) {
+        String loginFailed = App.getContext().getString(R.string.login_failed);
+        String errorMsg = loginFailed + error;
+        loginResult.postValue(new LoginResult(errorMsg));
     }
 
     public void loginDataChanged(String username, String password) {
