@@ -1,6 +1,7 @@
-package com.xpf.android.pure.data;
+package com.xpf.android.pure.data.repository;
 
 import com.xpf.android.pure.data.model.BaseModel;
+import com.xpf.android.pure.data.source.LogoutDataSource;
 import com.xpf.android.pure.net.callback.ResultCallback;
 
 /**

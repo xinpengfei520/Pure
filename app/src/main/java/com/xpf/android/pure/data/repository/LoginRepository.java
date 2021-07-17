@@ -1,6 +1,8 @@
-package com.xpf.android.pure.data;
+package com.xpf.android.pure.data.repository;
 
+import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.LoggedInUser;
+import com.xpf.android.pure.data.source.LoginDataSource;
 import com.xpf.android.pure.net.callback.ResultCallback;
 
 /**

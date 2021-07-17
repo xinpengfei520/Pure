@@ -8,10 +8,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.xpf.android.pure.App;
 import com.xpf.android.pure.R;
+import com.xpf.android.pure.constant.SPKeys;
 import com.xpf.android.pure.constant.Status;
-import com.xpf.android.pure.data.LoginRepository;
+import com.xpf.android.pure.data.repository.LoginRepository;
 import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.LoggedInUser;
+import com.xpf.android.pure.utils.SPUtils;
 
 public class LoginViewModel extends ViewModel {
 
@@ -37,21 +39,29 @@ public class LoginViewModel extends ViewModel {
             if (result instanceof Result.Success) {
                 LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
                 Integer code = data.getCode();
+
                 if (Status.isSuccess(String.valueOf(code))) {
                     String nickname = data.getProfile().getNickname();
+                    String signature = data.getProfile().getSignature();
+                    String avatarUrl = data.getProfile().getAvatarUrl();
+
+                    SPUtils.put(App.getContext(), SPKeys.NICKNAME, nickname);
+                    SPUtils.put(App.getContext(), SPKeys.SIGNATURE, signature);
+                    SPUtils.put(App.getContext(), SPKeys.AVATAR_URL, avatarUrl);
+
                     // setValue(T) 必须在主线程中调用 , 而 postValue(T) 既可以在主线程中调用, 也可以在子线程中调用
                     loginResult.postValue(new LoginResult(new LoggedInUserView(nickname)));
                 } else {
-                    setValueOnResult(Status.getErrorMsg(String.valueOf(code)));
+                    setValueOnFailed(Status.getErrorMsg(String.valueOf(code)));
                 }
             } else {
                 Exception error = ((Result.Error<LoggedInUser>) result).getError();
-                setValueOnResult(error.toString());
+                setValueOnFailed(error.toString());
             }
         });
     }
 
-    private void setValueOnResult(String error) {
+    private void setValueOnFailed(String error) {
         String loginFailed = App.getContext().getString(R.string.login_failed);
         String errorMsg = loginFailed + error;
         loginResult.postValue(new LoginResult(errorMsg));

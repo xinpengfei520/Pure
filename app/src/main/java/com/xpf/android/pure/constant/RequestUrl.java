@@ -12,4 +12,5 @@ public class RequestUrl {
     public static final String BASE_URL = BuildConfig.BASE_URL;
     public static final String LOGIN = BASE_URL + "/login/cellphone";
     public static final String LOGOUT = BASE_URL + "/logout";
+    public static final String LOGIN_STATUS = BASE_URL + "/login/status";
 }

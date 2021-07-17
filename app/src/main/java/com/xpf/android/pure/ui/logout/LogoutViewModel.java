@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.xpf.android.pure.App;
 import com.xpf.android.pure.R;
-import com.xpf.android.pure.data.LogoutRepository;
+import com.xpf.android.pure.data.repository.LogoutRepository;
 import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.BaseModel;
 

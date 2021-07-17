@@ -4,9 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.xpf.android.pure.data.LogoutDataSource;
-import com.xpf.android.pure.data.LogoutRepository;
-import com.xpf.android.pure.ui.login.LoginViewModel;
+import com.xpf.android.pure.data.source.LogoutDataSource;
+import com.xpf.android.pure.data.repository.LogoutRepository;
 
 /**
  * ViewModel provider factory to instantiate LogoutViewModel.
