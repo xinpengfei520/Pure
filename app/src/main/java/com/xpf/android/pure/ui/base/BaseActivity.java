@@ -5,13 +5,35 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.xpf.android.pure.utils.StatusBarUtils;
+import com.xpf.android.pure.widget.LoadingDialog;
 
 public class BaseActivity extends AppCompatActivity {
+
+    private LoadingDialog mLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StatusBarUtils.tint(this);
+        mLoading = new LoadingDialog(this);
+    }
+
+    protected void showLoading() {
+        if (mLoading != null && !mLoading.isShowing()) {
+            mLoading.show();
+        }
+    }
+
+    protected void dismissLoading() {
+        if (mLoading != null && mLoading.isShowing()) {
+            mLoading.dismiss();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        dismissLoading();
     }
 
     protected void presentActivity() {

@@ -12,7 +12,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -27,9 +26,10 @@ import com.xpf.android.pure.R;
 import com.xpf.android.pure.constant.IntentExtra;
 import com.xpf.android.pure.constant.SPKeys;
 import com.xpf.android.pure.databinding.ActivityMainBinding;
+import com.xpf.android.pure.ui.base.BaseActivity;
 import com.xpf.android.pure.utils.SPUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
