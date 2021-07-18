@@ -1,6 +1,5 @@
 package com.xpf.android.pure.ui.login;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -8,21 +7,26 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.xpf.android.pure.R;
+import com.xpf.android.pure.constant.IntentExtra;
 import com.xpf.android.pure.databinding.ActivityLoginBinding;
+import com.xpf.android.pure.ui.base.BaseActivity;
 import com.xpf.android.pure.ui.main.MainActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
+    private ProgressBar loadingProgressBar;
+    private Button loginButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,16 +38,16 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
-        final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
+        final TextInputEditText usernameEditText = binding.username;
+        final TextInputEditText passwordEditText = binding.password;
+        loginButton = binding.login;
+        loadingProgressBar = binding.loading;
 
         loginViewModel.getLoginFormState().observe(this, loginFormState -> {
             if (loginFormState == null) {
                 return;
             }
-            loginButton.setEnabled(loginFormState.isDataValid());
+            loginButton.setVisibility(loginFormState.isDataValid() ? View.VISIBLE : View.GONE);
             if (loginFormState.getUsernameError() != null) {
                 usernameEditText.setError(getString(loginFormState.getUsernameError()));
             }
@@ -113,10 +117,30 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void jumpToMainActivity() {
-        setResult(Activity.RESULT_OK);
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        presentActivity(loginButton);
+//        setResult(Activity.RESULT_OK);
+//        Intent intent = new Intent(this, MainActivity.class);
+//        startActivity(intent);
         // Complete and destroy login activity once successful
-        finish();
+//        finish();
+    }
+
+    protected void presentActivity(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+
+        if (view != null) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.
+                    makeSceneTransitionAnimation(this, view, "transition");
+
+            int revealX = (int) (view.getX() + view.getWidth() / 2);
+            int revealY = (int) (view.getY() + view.getHeight() / 2);
+
+            intent.putExtra(IntentExtra.CIRCULAR_REVEAL_X, revealX);
+            intent.putExtra(IntentExtra.CIRCULAR_REVEAL_Y, revealY);
+
+            ActivityCompat.startActivity(this, intent, options.toBundle());
+        } else {
+            startActivity(intent);
+        }
     }
 }

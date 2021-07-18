@@ -3,15 +3,14 @@ package com.xpf.android.pure.ui.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.xpf.android.pure.databinding.ActivityWelcomeBinding;
+import com.xpf.android.pure.ui.base.BaseActivity;
 import com.xpf.android.pure.ui.login.LoginActivity;
-import com.xpf.android.pure.ui.main.MainActivity;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends BaseActivity {
 
     private WelcomeViewModel welcomeViewModel;
     private ActivityWelcomeBinding binding;
@@ -31,11 +30,12 @@ public class WelcomeActivity extends AppCompatActivity {
             @Override
             public void onChanged(String s) {
                 Intent intent = null;
-                if ("200".equals(s)) {
-                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                } else {
-                    intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                }
+//                if ("200".equals(s)) {
+//                    intent = new Intent(WelcomeActivity.this, MainActivity.class);
+//                } else {
+//                    intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+//                }
+                intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
