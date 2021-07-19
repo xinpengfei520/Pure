@@ -1,9 +1,14 @@
 package com.xpf.android.pure.ui.main;
 
 import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -28,12 +33,25 @@ import com.xpf.android.pure.constant.SPKeys;
 import com.xpf.android.pure.databinding.ActivityMainBinding;
 import com.xpf.android.pure.ui.base.BaseActivity;
 import com.xpf.android.pure.utils.SPUtils;
+import com.xpf.android.pure.utils.ToastUtils;
 
 public class MainActivity extends BaseActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
     private DrawerLayout rootLayout;
+    private boolean isExit = false;
+    private static final int EXIT_APP_FLAG = 1;
+
+    @SuppressLint("HandlerLeak")
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            if (EXIT_APP_FLAG == msg.what) {
+                isExit = false;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,5 +150,32 @@ public class MainActivity extends BaseActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exit();
+            return false;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private void exit() {
+        if (!isExit) {
+            isExit = true;
+            ToastUtils.showShort(getApplicationContext(), "再按一下退出");
+            mHandler.sendEmptyMessageDelayed(EXIT_APP_FLAG, 2000);
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
     }
 }
