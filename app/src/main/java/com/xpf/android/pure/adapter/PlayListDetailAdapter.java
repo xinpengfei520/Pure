@@ -14,8 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xpf.android.pure.R;
 import com.xpf.android.pure.data.model.PlayListDetail;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 /**
@@ -37,14 +35,13 @@ public class PlayListDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     }
 
     @NonNull
-    @NotNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(mLayoutInflater.inflate(R.layout.item_play_detail_list, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.setData(position, mList.get(position));
     }
@@ -61,7 +58,7 @@ public class PlayListDetailAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         private TextView tvSinger;
         private ConstraintLayout itemLayout;
 
-        public ViewHolder(@NotNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             tvIndex = itemView.findViewById(R.id.tvIndex);
             tvSong = itemView.findViewById(R.id.tvSong);

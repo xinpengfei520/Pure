@@ -18,8 +18,6 @@ import com.xpf.android.pure.constant.IntentExtra;
 import com.xpf.android.pure.data.model.PlayListModel;
 import com.xpf.android.pure.ui.playlistdetail.PlayListDetailActivity;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
 
 /**
@@ -39,14 +37,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @NonNull
-    @NotNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(mLayoutInflater.inflate(R.layout.item_play_list_layout, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull @NotNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
         viewHolder.setData(mList.get(position));
     }
@@ -64,7 +61,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ConstraintLayout itemLayout;
         private PlayListModel.PlaylistBean playlistBean;
 
-        public ViewHolder(@NotNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             ivCover = itemView.findViewById(R.id.ivCover);
             tvName = itemView.findViewById(R.id.tvName);
