@@ -24,8 +24,10 @@ public class WelcomeDataSource {
     private static final String TAG = "WelcomeDataSource";
 
     public void getLoginStatus(ResultCallback<LoginStatus> callback) {
+        String url = RequestUrl.LOGIN_STATUS + "?" + RequestUrl.TIMESTAMP + System.currentTimeMillis();
+
         OkHttpHelper.getInstance()
-                .get(RequestUrl.LOGIN_STATUS, new Callback() {
+                .get(url, new Callback() {
                     @Override
                     public void onFailure(@NotNull Call call, @NotNull IOException e) {
                         LogUtils.e(TAG, "error:" + e.toString());

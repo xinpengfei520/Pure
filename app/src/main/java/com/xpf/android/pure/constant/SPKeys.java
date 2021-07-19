@@ -6,4 +6,5 @@ public class SPKeys {
     public static final String AVATAR_URL = "avatar_url";
     public static final String USER_ID = "user_id";
     public static final String COOKIE = "cookie";
+    public static final String HEADER = "header";
 }

@@ -8,12 +8,11 @@ import androidx.lifecycle.ViewModel;
 
 import com.xpf.android.pure.App;
 import com.xpf.android.pure.R;
-import com.xpf.android.pure.constant.SPKeys;
 import com.xpf.android.pure.constant.Status;
-import com.xpf.android.pure.data.repository.LoginRepository;
 import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.LoggedInUser;
-import com.xpf.android.pure.utils.SPUtils;
+import com.xpf.android.pure.data.repository.LoginRepository;
+import com.xpf.android.pure.utils.StorageUtils;
 
 public class LoginViewModel extends ViewModel {
 
@@ -46,10 +45,7 @@ public class LoginViewModel extends ViewModel {
                     String avatarUrl = data.getProfile().getAvatarUrl();
                     Integer userId = data.getAccount().getId();
 
-                    SPUtils.put(App.getContext(), SPKeys.NICKNAME, nickname);
-                    SPUtils.put(App.getContext(), SPKeys.SIGNATURE, signature);
-                    SPUtils.put(App.getContext(), SPKeys.AVATAR_URL, avatarUrl);
-                    SPUtils.put(App.getContext(), SPKeys.USER_ID, String.valueOf(userId));
+                    StorageUtils.updateUserInfo(nickname, signature, avatarUrl, userId);
 
                     // setValue(T) 必须在主线程中调用 , 而 postValue(T) 既可以在主线程中调用, 也可以在子线程中调用
                     loginResult.postValue(new LoginResult(new LoggedInUserView(nickname)));

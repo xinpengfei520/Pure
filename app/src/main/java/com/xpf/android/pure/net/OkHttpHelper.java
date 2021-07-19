@@ -1,6 +1,11 @@
 package com.xpf.android.pure.net;
 
 import com.google.gson.Gson;
+import com.xpf.android.pure.App;
+import com.xpf.android.pure.net.cookie.ClearableCookieJar;
+import com.xpf.android.pure.net.cookie.PersistentCookieJar;
+import com.xpf.android.pure.net.cookie.cache.SetCookieCache;
+import com.xpf.android.pure.net.cookie.persistence.SharedPrefsCookiePersistor;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -24,12 +29,18 @@ public class OkHttpHelper {
     private static volatile OkHttpHelper INSTANCE = null;
     private final OkHttpClient okHttpClient;
     private static final int TIME_OUT = 20;
+    private static final String COOKIE = "MUSIC_U=2d5fcea6c048589b91fad63c9c35f56a0dbfb9a24bc49efa55d0bd1dd54c45820931c3a9fbfe3df2; NMTID=00OVpRFL_jrSRS_GkVhvPI7hL0MnWoAAAF6vNC8Dw; __csrf=398dac12fdcc146393bf583138a70d64; __remember_me=true";
 
     private OkHttpHelper() {
+        ClearableCookieJar cookieJar =
+                new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(App.getContext()));
+
         okHttpClient = new OkHttpClient.Builder()
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .writeTimeout(TIME_OUT, TimeUnit.SECONDS)
+                // 自动管理 Cookie
+                .cookieJar(cookieJar)
                 .build();
     }
 
@@ -78,11 +89,14 @@ public class OkHttpHelper {
     private Request buildRequest(String url, Map<String, Object> params, HttpMethod type, boolean isPostJson) {
         Request.Builder builder = new Request.Builder();
         builder.url(url);
+        //builder.addHeader("Cookie", COOKIE);
+
         if (type == HttpMethod.GET) {
             builder.get();
         } else if (type == HttpMethod.POST) {
             builder.post(buildRequestBody(params, isPostJson));
         }
+
         return builder.build();
     }
 

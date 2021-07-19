@@ -9,6 +9,7 @@ import com.xpf.android.pure.constant.Status;
 import com.xpf.android.pure.data.Result;
 import com.xpf.android.pure.data.model.LoginStatus;
 import com.xpf.android.pure.data.repository.WelcomeRepository;
+import com.xpf.android.pure.utils.StorageUtils;
 
 public class WelcomeViewModel extends ViewModel {
 
@@ -29,12 +30,21 @@ public class WelcomeViewModel extends ViewModel {
                 LoginStatus loginStatus = ((Result.Success<LoginStatus>) result).getData();
                 LoginStatus.DataBean data = loginStatus.getData();
                 Integer code = data.getCode();
-                Object account = data.getAccount();
-                Object profile = data.getProfile();
+                LoginStatus.DataBean.AccountBean account = data.getAccount();
+                LoginStatus.DataBean.ProfileBean profile = data.getProfile();
 
                 if (Status.isSuccess(String.valueOf(code))) {
+
                     if (account != null && profile != null) {
+                        String nickname = profile.getNickname();
+                        String signature = profile.getSignature();
+                        String avatarUrl = profile.getAvatarUrl();
+                        Integer userId = account.getId();
+
+                        StorageUtils.updateUserInfo(nickname, signature, avatarUrl, userId);
+
                         loginStatusResult.postValue(String.valueOf(code));
+
                     } else {
                         setValueOnFailed(Status.getErrorMsg(String.valueOf(-1)));
                     }

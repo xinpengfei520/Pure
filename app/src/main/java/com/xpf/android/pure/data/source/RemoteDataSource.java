@@ -28,7 +28,7 @@ public class RemoteDataSource {
 
     public void getPlayList(ResultCallback<PlayListModel> callback) {
         String userId = (String) SPUtils.get(App.getContext(), SPKeys.USER_ID, "");
-        String url = RequestUrl.PLAY_LIST + userId;
+        String url = RequestUrl.PLAY_LIST + userId + "&" + RequestUrl.TIMESTAMP + System.currentTimeMillis();
 
         OkHttpHelper.getInstance()
                 .get(url, new Callback() {

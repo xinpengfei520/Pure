@@ -41,16 +41,20 @@ public class LogUtils {
 
     private static String getLogcat(Object... message) {
         StringBuilder sb = new StringBuilder();
+
         try {
-            if (message != null) {
-                for (Object object : message) {
-                    sb.append(object);
-                    sb.append(" ## ");
+            if (message != null && message.length > 0) {
+                for (int i = 0; i < message.length; i++) {
+                    sb.append(message[i]);
+                    if (i < (message.length - 1)) {
+                        sb.append(" ## ");
+                    }
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return sb.toString();
     }
 }
