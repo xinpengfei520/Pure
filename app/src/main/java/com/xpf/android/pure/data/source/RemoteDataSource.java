@@ -5,6 +5,7 @@ import com.xpf.android.pure.App;
 import com.xpf.android.pure.constant.RequestUrl;
 import com.xpf.android.pure.constant.SPKeys;
 import com.xpf.android.pure.data.Result;
+import com.xpf.android.pure.data.model.PlayListDetail;
 import com.xpf.android.pure.data.model.PlayListModel;
 import com.xpf.android.pure.net.OkHttpHelper;
 import com.xpf.android.pure.net.callback.ResultCallback;
@@ -48,6 +49,33 @@ public class RemoteDataSource {
                             PlayListModel baseModel = new Gson().fromJson(json, PlayListModel.class);
                             if (callback != null) {
                                 callback.onResult(new Result.Success<>(baseModel));
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void getPlayListDetail(String id, ResultCallback<PlayListDetail> callback) {
+        String url = RequestUrl.PLAY_LIST_DETAIL + id + "&" + RequestUrl.TIMESTAMP + System.currentTimeMillis();
+
+        OkHttpHelper.getInstance()
+                .get(url, new Callback() {
+                    @Override
+                    public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                        LogUtils.e(TAG, "error:" + e.toString());
+                        if (callback != null) {
+                            callback.onResult(new Result.Error<>(e));
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                        if (response.isSuccessful()) {
+                            String json = response.body().string();
+                            LogUtils.d(TAG, "json:" + json);
+                            PlayListDetail playListDetail = new Gson().fromJson(json, PlayListDetail.class);
+                            if (callback != null) {
+                                callback.onResult(new Result.Success<>(playListDetail));
                             }
                         }
                     }

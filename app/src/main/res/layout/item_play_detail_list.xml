@@ -3,15 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/itemLayout"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="64dp"
+    android:background="@drawable/bottom_gray_divider">
 
-    <ImageView
-        android:id="@+id/ivCover"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+    <TextView
+        android:id="@+id/tvIndex"
+        android:layout_width="24dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:src="@drawable/ic_pure_logo"
+        android:gravity="center"
+        android:text="1"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,27 +27,30 @@
         app:layout_constraintGuide_percent="0.5" />
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvSong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="4dp"
-        android:text="名称"
+        android:layout_marginBottom="2dp"
+        android:ellipsize="end"
+        android:maxEms="32"
+        android:maxLines="1"
+        android:text="歌名"
         android:textColor="#333333"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@id/guideline"
-        app:layout_constraintLeft_toRightOf="@id/ivCover" />
+        app:layout_constraintLeft_toRightOf="@id/tvIndex" />
 
     <TextView
-        android:id="@+id/tvCount"
+        android:id="@+id/tvSinger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="11首"
+        android:layout_marginTop="2dp"
+        android:text="歌手"
         android:textSize="12sp"
-        app:layout_constraintLeft_toRightOf="@id/ivCover"
-        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintLeft_toRightOf="@id/tvIndex"
+        app:layout_constraintStart_toStartOf="@id/tvSong"
         app:layout_constraintTop_toBottomOf="@id/guideline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

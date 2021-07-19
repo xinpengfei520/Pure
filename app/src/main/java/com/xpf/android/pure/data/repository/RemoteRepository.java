@@ -1,5 +1,6 @@
 package com.xpf.android.pure.data.repository;
 
+import com.xpf.android.pure.data.model.PlayListDetail;
 import com.xpf.android.pure.data.model.PlayListModel;
 import com.xpf.android.pure.data.source.RemoteDataSource;
 import com.xpf.android.pure.net.callback.ResultCallback;
@@ -27,6 +28,10 @@ public class RemoteRepository {
 
     public void getPlayList(ResultCallback<PlayListModel> callback) {
         dataSource.getPlayList(callback);
+    }
+
+    public void getPlayListDetail(String id, ResultCallback<PlayListDetail> callback) {
+        dataSource.getPlayListDetail(id, callback);
     }
 
 }

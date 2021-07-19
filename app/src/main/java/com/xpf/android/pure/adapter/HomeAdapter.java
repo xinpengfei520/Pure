@@ -1,6 +1,7 @@
 package com.xpf.android.pure.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.xpf.android.pure.R;
+import com.xpf.android.pure.constant.IntentExtra;
 import com.xpf.android.pure.data.model.PlayListModel;
+import com.xpf.android.pure.ui.playlistdetail.PlayListDetailActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +62,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private TextView tvName;
         private TextView tvCount;
         private ConstraintLayout itemLayout;
+        private PlayListModel.PlaylistBean playlistBean;
 
         public ViewHolder(@NotNull View itemView) {
             super(itemView);
@@ -70,15 +74,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         private void initListener() {
-            itemLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
+            itemLayout.setOnClickListener(v -> {
+                Long id = playlistBean.getId();
+                try {
+                    Intent intent = new Intent(mContext, PlayListDetailActivity.class);
+                    intent.putExtra(IntentExtra.PLAY_LIST_ID, String.valueOf(id));
+                    mContext.startActivity(intent);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             });
         }
 
         public void setData(PlayListModel.PlaylistBean playlistBean) {
+            this.playlistBean = playlistBean;
             String coverImgUrl = playlistBean.getCoverImgUrl();
             Glide.with(mContext).load(coverImgUrl).into(ivCover);
             tvName.setText(playlistBean.getName());
