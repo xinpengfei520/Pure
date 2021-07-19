@@ -44,10 +44,12 @@ public class LoginViewModel extends ViewModel {
                     String nickname = data.getProfile().getNickname();
                     String signature = data.getProfile().getSignature();
                     String avatarUrl = data.getProfile().getAvatarUrl();
+                    Integer userId = data.getAccount().getId();
 
                     SPUtils.put(App.getContext(), SPKeys.NICKNAME, nickname);
                     SPUtils.put(App.getContext(), SPKeys.SIGNATURE, signature);
                     SPUtils.put(App.getContext(), SPKeys.AVATAR_URL, avatarUrl);
+                    SPUtils.put(App.getContext(), SPKeys.USER_ID, String.valueOf(userId));
 
                     // setValue(T) 必须在主线程中调用 , 而 postValue(T) 既可以在主线程中调用, 也可以在子线程中调用
                     loginResult.postValue(new LoginResult(new LoggedInUserView(nickname)));

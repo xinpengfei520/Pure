@@ -118,11 +118,6 @@ public class LoginActivity extends BaseActivity {
 
     private void jumpToMainActivity() {
         presentActivity(loginButton);
-//        setResult(Activity.RESULT_OK);
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
-        // Complete and destroy login activity once successful
-//        finish();
     }
 
     protected void presentActivity(View view) {
@@ -142,5 +137,7 @@ public class LoginActivity extends BaseActivity {
         } else {
             startActivity(intent);
         }
+
+        finish();
     }
 }

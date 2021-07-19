@@ -4,20 +4,21 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.xpf.android.pure.adapter.HomeAdapter;
 import com.xpf.android.pure.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    private HomeAdapter mAdapter;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -28,14 +29,21 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
+        final RecyclerView recyclerView = binding.rvList;
+        homeViewModel.getPlayListResult().observe(getViewLifecycleOwner(), list -> {
+            mAdapter = new HomeAdapter(getContext(), list);
+            recyclerView.setAdapter(mAdapter);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(),
+                    LinearLayoutManager.VERTICAL, false);
+            recyclerView.setLayoutManager(linearLayoutManager);
         });
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        homeViewModel.getPlayList();
     }
 
     @Override

@@ -27,10 +27,17 @@ public class WelcomeViewModel extends ViewModel {
         welcomeRepository.getLoginStatus(result -> {
             if (result instanceof Result.Success) {
                 LoginStatus loginStatus = ((Result.Success<LoginStatus>) result).getData();
-                Integer code = loginStatus.getData().getCode();
+                LoginStatus.DataBean data = loginStatus.getData();
+                Integer code = data.getCode();
+                Object account = data.getAccount();
+                Object profile = data.getProfile();
 
                 if (Status.isSuccess(String.valueOf(code))) {
-                    loginStatusResult.postValue(String.valueOf(code));
+                    if (account != null && profile != null) {
+                        loginStatusResult.postValue(String.valueOf(code));
+                    } else {
+                        setValueOnFailed(Status.getErrorMsg(String.valueOf(-1)));
+                    }
                 } else {
                     setValueOnFailed(Status.getErrorMsg(String.valueOf(code)));
                 }
@@ -44,7 +51,7 @@ public class WelcomeViewModel extends ViewModel {
 
     private void setValueOnFailed(String error) {
         String loginFailed = App.getContext().getString(R.string.login_failed);
-        String errorMsg = loginFailed + error;
+        String errorMsg = loginFailed + ":" + error;
         loginStatusResult.postValue(errorMsg);
     }
 }
